@@ -42,6 +42,7 @@
 
 #include <Rconfig.h>
 #include <Rmath.h>
+#include <stdbool.h> // ADDITION
 
 /* Used internally only */
 double  Rf_d1mach(int);

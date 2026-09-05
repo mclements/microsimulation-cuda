@@ -29,9 +29,9 @@
 - I copied files from R svn version 90492 on 2026-09-05
 
 ** nmath.h
-- Includes Rconfig.h, Rmath.h, R_ext/RS.h, R_ext/Print.h, R_ext/ (see statslabs/rmath)
+- Includes Rconfig.h, Rmath.h, R_ext/(RS.h|Print.h|Arith.h|Error.h) (see statslabs/rmath)
 - Conditional include for config.h
-- 
+- Assumes MATHLIB_STANDALONE is defined
 
 
 ** dpq.h
