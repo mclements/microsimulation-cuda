@@ -1,0 +1,43 @@
+#+title: Porting notes for the RngStream library and nmath/rmath functions
+
+* RngStream library
+- The implementation based on doubles was changed to using integers.
+- The library is intended for use with CUDA and C++.
+  + Further testing is needed on CUDA (TODO)
+  + Testing is required on C++ (TODO)
+- Due to the intended use with CUDA, the RngStream structs are small and do not include methods (outside of constructors). The other functionality has been moved to functions.
+- The library uses an ~rngstream~ namespace.
+- For CUDA:
+  + Host and device code allow for:
+    - ~RngStream()~ :: Default constructor that defaults to a seed of ~{12345U,12345U,12345U,12345U,12345U,12345U}~
+    - ~RngStream(uint32_t[6])~ :: Constructor for an unsigned integer array of length 6
+    - ~RngStream(uint32_t)~ :: Constructor for an unsigned integer, that sets the seed as per ~set.seed()~ in R (new)
+    - ~double U01(RngStream)~ :: Uniform random draw
+    - ~float U01f(RngStream)~ :: Uniform random draw (new)
+    - ~void ResetStartStream(RngStream)~ :: reset the stream to its start
+    - ~void ResetStartSubstream(RngStream)~ :: reset the substream to its start
+    - ~void ResetNextStream(RngStream)~ :: reset the stream to its start and then advance to the next stream
+    - ~void ResetNextSubstream(RngStream)~ :: reset the substream to its start and then advance to the next substream
+  + Host code also includes:
+    - ~void AdvanceStreams(RngStream, uint32_t)~ that efficiently advances the stream by an integer (new)
+    - ~void AdvanceSubstreams(RngStream, uint32_t)~ that efficiently advances the substream by an integer (new)
+
+* Partial implementation of the nmath/rmath library for CUDA
+
+- This is not intended as a complete port of the nmath functions to CUDA. For OpenCL, see the https://github.com/knygren/nmathopencl library. For a standalone implementation of nmath/rpath, see https://github.com/statslabs/rmath.
+- The plan is to include a set of R's non-uniform random number functions for working with the RngStream library. Note that floating point differences between R's implementations and CUDA may prohibit a bit-wise re-implementation. 
+- I copied files from R svn version 90492 on 2026-09-05
+
+** nmath.h
+- Includes Rconfig.h, Rmath.h, R_ext/RS.h, R_ext/Print.h, R_ext/ (see statslabs/rmath)
+- Conditional include for config.h
+- 
+
+
+** dpq.h
+- Macros
+- Calls expm1(), log1p(), ML_NEGINF, M_LN2, ML_WARN_return_NAN, R_FINITE(), R_nonint()
+
+** qnorm.c
+- Includes nmath.h, dpq.h
+- 
