@@ -35,7 +35,7 @@ src/qnorm: src/qnorm.c
 	gcc -c qgamma.c -DMATHLIB_STANDALONE=1 -I../include -I. && \
 	gcc -c pgamma.c -DMATHLIB_STANDALONE=1 -I../include -I. && \
 	gcc -c mlutils.c -DMATHLIB_STANDALONE=1 -I../include -I. && \
-	gcc test_qnorm.c -DMATHLIB_STANDALONE=1 -I../include -I. i1mach.o d1mach.o mlutils.o toms708.o arithmetic.o lgammacor.o chebyshev.o stirlerr.o bd0.o log1p.o cospi.o dpois.o ppois.o qpois.o fmax2.o gamma.o lgamma.o pgamma.o qgamma.o dgamma.o pnorm.o dnorm.o qnorm.o -lm
+	gcc test_qnorm.c -DMATHLIB_STANDALONE=1 -I../include -I. i1mach.o d1mach.o mlutils.o toms708.o lgammacor.o chebyshev.o stirlerr.o bd0.o log1p.o cospi.o dpois.o ppois.o qpois.o fmax2.o gamma.o lgamma.o pgamma.o qgamma.o dgamma.o pnorm.o dnorm.o qnorm.o -lm
 
 %: %.cu
 	$(NVCC) $(NVFLAGS) $< -o $@
