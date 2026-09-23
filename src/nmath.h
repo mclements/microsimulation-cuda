@@ -21,6 +21,14 @@
 #ifndef MATHLIB_PRIVATE_H
 #define MATHLIB_PRIVATE_H
 
+#ifdef __CUDACC__
+#define HD __host__ __device__
+#else
+#define HD
+#define __device__
+#endif
+
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -45,8 +53,8 @@
 #include <stdbool.h> // ADDITION
 
 /* Used internally only */
-double  Rf_d1mach(int);
-double	Rf_gamma_cody(double);
+HD double  Rf_d1mach(int);
+HD double  Rf_gamma_cody(double);
 
 #include <R_ext/RS.h>
 
@@ -156,7 +164,7 @@ int R_finite(double);
  */
 #define ML_WARNING(x, s) { \
    if(x > ME_DOMAIN) { \
-       char *msg = ""; \
+       const char *msg = ""; \
        switch(x) { \
        case ME_DOMAIN: \
 	   msg = _("argument out of domain in '%s'\n");	\
@@ -207,33 +215,38 @@ int R_finite(double);
 
 	/* Chebyshev Series */
 
-attribute_hidden int chebyshev_init(double*, int, double);
-attribute_hidden double chebyshev_eval(double, const double *, const int);
+HD attribute_hidden int chebyshev_init(double*, int, double);
+HD attribute_hidden double chebyshev_eval(double, const double *, const int);
 
 	/* Gamma and Related Functions */
 
-attribute_hidden void gammalims(double*, double*);
-attribute_hidden double lgammacor(double); /* log(gamma) correction */
-attribute_hidden double stirlerr(double);  /* Stirling expansion "error" */
+HD attribute_hidden void gammalims(double*, double*);
+HD attribute_hidden double lgammacor(double); /* log(gamma) correction */
+HD attribute_hidden double stirlerr(double);  /* Stirling expansion "error" */
 
-attribute_hidden double lfastchoose(double, double);
+HD attribute_hidden double lfastchoose(double, double);
 
-attribute_hidden double bd0(double, double);
-attribute_hidden void ebd0(double, double, double*, double*);
+HD attribute_hidden double bd0(double, double);
 
-attribute_hidden double pnchisq_raw(double, double, double, double, double,
+HD attribute_hidden void ebd0(double, double, double*, double*);
+
+HD attribute_hidden double pnchisq_raw(double, double, double, double, double,
 				     int, Rboolean, Rboolean);
-attribute_hidden double pgamma_raw(double, double, int, int);
-attribute_hidden double pbeta_raw(double, double, double, int, int);
-attribute_hidden double qchisq_appr(double, double, double, int, int, double tol);
-attribute_hidden LDOUBLE pnbeta_raw(double, double, double, double, double);
-attribute_hidden double pnbeta2(double, double, double, double, double, int, int);
+HD attribute_hidden double pgamma_raw(double, double, int, int);
+HD attribute_hidden double pbeta_raw(double, double, double, int, int);
+HD attribute_hidden double qchisq_appr(double, double, double, int, int, double tol);
+HD attribute_hidden LDOUBLE pnbeta_raw(double, double, double, double, double);
+HD attribute_hidden double pnbeta2(double, double, double, double, double, int, int);
 
-int	Rf_i1mach(int);
+HD int	Rf_i1mach(int);
 
 /* From toms708.c */
-attribute_hidden void bratio(double a, double b, double x, double y,
+HD attribute_hidden void bratio(double a, double b, double x, double y,
 	    		     double *w, double *w1, int *ierr, int log_p);
+
+/* ADDITIONS TO AVOID WARNINGS */
+HD attribute_hidden void wilcox_free(void);
+HD attribute_hidden double R_unif_index(double dn);
 
 
 #endif /* MATHLIB_PRIVATE_H */

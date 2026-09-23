@@ -45,6 +45,9 @@ using namespace std;
 # include <math.h>
 #endif
 
+// quick fix
+# include <math.h>
+
 #ifdef NO_C_HEADERS
 # warning "use of NO_C_HEADERS is defunct and will be ignored"
 #endif
@@ -56,12 +59,12 @@ using namespace std;
 /*-- Mathlib as part of R --  define this for standalone : */
 /* #undef MATHLIB_STANDALONE */
 
-double  Rexp1p(double);
-#define exp1p Rexp1p
+HD double  Rexp1p(double);
+// #define exp1p Rexp1p
 
 /* remap to avoid problems with getting the right entry point */
-double  Rlog1p(double);
-#define log1p Rlog1p
+HD double  Rlog1p(double);
+// #define log1p Rlog1p
 
 
 	/* Undo SGI Madness */
@@ -365,260 +368,259 @@ typedef enum { FALSE = 0, TRUE /*, MAYBE */ } Rboolean;
 #define pnorm pnorm5
 #define qnorm qnorm5
 
-#ifdef  __cplusplus
-extern "C" {
-#endif
+/* #ifdef  __cplusplus */
+/* extern "C" { */
+/* #endif */
 	/* R's versions with !R_FINITE checks */
 
-double R_pow(double x, double y);
-double R_pow_di(double, int);
+HD double R_pow(double x, double y);
+HD double R_pow_di(double, int);
 
 	/* Random Number Generators */
 
-double	norm_rand(void);
-double	unif_rand(void);
-double	exp_rand(void);
+HD double	norm_rand(void);
+HD double	unif_rand(void);
+HD double	exp_rand(void);
 #ifdef MATHLIB_STANDALONE
-void	set_seed(unsigned int, unsigned int);
-void	get_seed(unsigned int *, unsigned int *);
+HD void	set_seed(unsigned int, unsigned int);
+HD void	get_seed(unsigned int *, unsigned int *);
 #endif
 
 	/* Normal Distribution */
 
-double	dnorm(double, double, double, int);
-double	pnorm(double, double, double, int, int);
-double	qnorm(double, double, double, int, int);
-double	rnorm(double, double);
-void	pnorm_both(double, double *, double *, int, int);/* both tails */
+HD double	dnorm(double, double, double, int);
+HD double	pnorm(double, double, double, int, int);
+HD double	qnorm(double, double, double, int, int);
+HD double	rnorm(double, double);
+HD void	pnorm_both(double, double *, double *, int, int);/* both tails */
 
 	/* Uniform Distribution */
 
-double	dunif(double, double, double, int);
-double	punif(double, double, double, int, int);
-double	qunif(double, double, double, int, int);
-double	runif(double, double);
+HD double	dunif(double, double, double, int);
+HD double	punif(double, double, double, int, int);
+HD double	qunif(double, double, double, int, int);
+HD double	runif(double, double);
 
 	/* Gamma Distribution */
 
-double	dgamma(double, double, double, int);
-double	pgamma(double, double, double, int, int);
-double	qgamma(double, double, double, int, int);
-double	rgamma(double, double);
+HD double	dgamma(double, double, double, int);
+HD double	pgamma(double, double, double, int, int);
+HD double	qgamma(double, double, double, int, int);
+HD double	rgamma(double, double);
 
-double  log1pmx(double);
-double  log1pexp(double); // <-- ../nmath/plogis.c
-double  lgamma1p(double);
-double  logspace_add(double, double);
-double  logspace_sub(double, double);
-double  logspace_sum(const double *, int);
+HD double  log1pmx(double);
+HD double  log1pexp(double); // <-- ../nmath/plogis.c
+HD double  lgamma1p(double);
+HD double  logspace_add(double, double);
+HD double  logspace_sub(double, double);
+HD double  logspace_sum(const double *, int);
 
 	/* Beta Distribution */
 
-double	dbeta(double, double, double, int);
-double	pbeta(double, double, double, int, int);
-double	qbeta(double, double, double, int, int);
-double	rbeta(double, double);
+HD double	dbeta(double, double, double, int);
+HD double	pbeta(double, double, double, int, int);
+HD double	qbeta(double, double, double, int, int);
+HD double	rbeta(double, double);
 
 	/* Lognormal Distribution */
 
-double	dlnorm(double, double, double, int);
-double	plnorm(double, double, double, int, int);
-double	qlnorm(double, double, double, int, int);
-double	rlnorm(double, double);
+HD double	dlnorm(double, double, double, int);
+HD double	plnorm(double, double, double, int, int);
+HD double	qlnorm(double, double, double, int, int);
+HD double	rlnorm(double, double);
 
 	/* Chi-squared Distribution */
 
-double	dchisq(double, double, int);
-double	pchisq(double, double, int, int);
-double	qchisq(double, double, int, int);
-double	rchisq(double);
+HD double	dchisq(double, double, int);
+HD double	pchisq(double, double, int, int);
+HD double	qchisq(double, double, int, int);
+HD double	rchisq(double);
 
 	/* Non-central Chi-squared Distribution */
 
-double	dnchisq(double, double, double, int);
-double	pnchisq(double, double, double, int, int);
-double	qnchisq(double, double, double, int, int);
-double	rnchisq(double, double);
+HD double	dnchisq(double, double, double, int);
+HD double	pnchisq(double, double, double, int, int);
+HD double	qnchisq(double, double, double, int, int);
+HD double	rnchisq(double, double);
 
 	/* F Distibution */
 
-double	df(double, double, double, int);
-double	pf(double, double, double, int, int);
-double	qf(double, double, double, int, int);
-double	rf(double, double);
+HD double	df(double, double, double, int);
+HD double	pf(double, double, double, int, int);
+HD double	qf(double, double, double, int, int);
+HD double	rf(double, double);
 
 	/* Student t Distibution */
 
-double	dt(double, double, int);
-double	pt(double, double, int, int);
-double	qt(double, double, int, int);
-double	rt(double);
+HD double	dt(double, double, int);
+HD double	pt(double, double, int, int);
+HD double	qt(double, double, int, int);
+HD double	rt(double);
 
 	/* Binomial Distribution */
 
-double  dbinom_raw(double x, double n, double p, double q, int give_log);
-double	dbinom(double, double, double, int);
-double	pbinom(double, double, double, int, int);
-double	qbinom(double, double, double, int, int);
-double	rbinom(double, double);
+HD double  dbinom_raw(double x, double n, double p, double q, int give_log);
+HD double	dbinom(double, double, double, int);
+HD double	pbinom(double, double, double, int, int);
+HD double	qbinom(double, double, double, int, int);
+HD double	rbinom(double, double);
 
 	/* Multnomial Distribution */
 
-void	rmultinom(int, double*, int, int*);
+HD void	rmultinom(int, double*, int, int*);
 
 	/* Cauchy Distribution */
 
-double	dcauchy(double, double, double, int);
-double	pcauchy(double, double, double, int, int);
-double	qcauchy(double, double, double, int, int);
-double	rcauchy(double, double);
+HD double	dcauchy(double, double, double, int);
+HD double	pcauchy(double, double, double, int, int);
+HD double	qcauchy(double, double, double, int, int);
+HD double	rcauchy(double, double);
 
 	/* Exponential Distribution */
 
-double	dexp(double, double, int);
-double	pexp(double, double, int, int);
-double	qexp(double, double, int, int);
-double	rexp(double);
+HD double	dexp(double, double, int);
+HD double	pexp(double, double, int, int);
+HD double	qexp(double, double, int, int);
+HD double	rexp(double);
 
 	/* Geometric Distribution */
 
-double	dgeom(double, double, int);
-double	pgeom(double, double, int, int);
-double	qgeom(double, double, int, int);
-double	rgeom(double);
+HD double	dgeom(double, double, int);
+HD double	pgeom(double, double, int, int);
+HD double	qgeom(double, double, int, int);
+HD double	rgeom(double);
 
 	/* Hypergeometric Distibution */
 
-double	dhyper(double, double, double, double, int);
-double	phyper(double, double, double, double, int, int);
-double	qhyper(double, double, double, double, int, int);
-double	rhyper(double, double, double);
+HD double	dhyper(double, double, double, double, int);
+HD double	phyper(double, double, double, double, int, int);
+HD double	qhyper(double, double, double, double, int, int);
+HD double	rhyper(double, double, double);
 
 	/* Negative Binomial Distribution */
 
-double	dnbinom(double, double, double, int);
-double	pnbinom(double, double, double, int, int);
-double	qnbinom(double, double, double, int, int);
-double	rnbinom(double, double);
+HD double	dnbinom(double, double, double, int);
+HD double	pnbinom(double, double, double, int, int);
+HD double	qnbinom(double, double, double, int, int);
+HD double	rnbinom(double, double);
 
-double	dnbinom_mu(double, double, double, int);
-double	pnbinom_mu(double, double, double, int, int);
-double	qnbinom_mu(double, double, double, int, int);
-double	rnbinom_mu(double, double);
+HD double	dnbinom_mu(double, double, double, int);
+HD double	pnbinom_mu(double, double, double, int, int);
+HD double	qnbinom_mu(double, double, double, int, int);
+HD double	rnbinom_mu(double, double);
 
 	/* Poisson Distribution */
-
-double	dpois_raw (double, double, int);
-double	dpois(double, double, int);
-double	ppois(double, double, int, int);
-double	qpois(double, double, int, int);
-double	rpois(double);
+HD double	dpois_raw (double, double, int);
+HD double	dpois(double, double, int);
+HD double	ppois(double, double, int, int);
+HD double	qpois(double, double, int, int);
+HD double	rpois(double);
 
 	/* Weibull Distribution */
 
-double	dweibull(double, double, double, int);
-double	pweibull(double, double, double, int, int);
-double	qweibull(double, double, double, int, int);
-double	rweibull(double, double);
+HD double	dweibull(double, double, double, int);
+HD double	pweibull(double, double, double, int, int);
+HD double	qweibull(double, double, double, int, int);
+HD double	rweibull(double, double);
 
 	/* Logistic Distribution */
 
-double	dlogis(double, double, double, int);
-double	plogis(double, double, double, int, int);
-double	qlogis(double, double, double, int, int);
-double	rlogis(double, double);
+HD double	dlogis(double, double, double, int);
+HD double	plogis(double, double, double, int, int);
+HD double	qlogis(double, double, double, int, int);
+HD double	rlogis(double, double);
 
 	/* Non-central Beta Distribution */
 
-double	dnbeta(double, double, double, double, int);
-double	pnbeta(double, double, double, double, int, int);
-double	qnbeta(double, double, double, double, int, int);
-double	rnbeta(double, double, double);
+HD double	dnbeta(double, double, double, double, int);
+HD double	pnbeta(double, double, double, double, int, int);
+HD double	qnbeta(double, double, double, double, int, int);
+HD double	rnbeta(double, double, double);
 
 	/* Non-central F Distribution */
 
-double  dnf(double, double, double, double, int);
-double	pnf(double, double, double, double, int, int);
-double	qnf(double, double, double, double, int, int);
+HD double  dnf(double, double, double, double, int);
+HD double	pnf(double, double, double, double, int, int);
+HD double	qnf(double, double, double, double, int, int);
 
 	/* Non-central Student t Distribution */
 
-double	dnt(double, double, double, int);
-double	pnt(double, double, double, int, int);
-double	qnt(double, double, double, int, int);
+HD double	dnt(double, double, double, int);
+HD double	pnt(double, double, double, int, int);
+HD double	qnt(double, double, double, int, int);
 
 	/* Studentized Range Distribution */
 
-double	ptukey(double, double, double, double, int, int);
-double	qtukey(double, double, double, double, int, int);
+HD double	ptukey(double, double, double, double, int, int);
+HD double	qtukey(double, double, double, double, int, int);
 
 	/* Wilcoxon Rank Sum Distribution */
 
-double dwilcox(double, double, double, int);
-double pwilcox(double, double, double, int, int);
-double qwilcox(double, double, double, int, int);
-double rwilcox(double, double);
+HD double dwilcox(double, double, double, int);
+HD double pwilcox(double, double, double, int, int);
+HD double qwilcox(double, double, double, int, int);
+HD double rwilcox(double, double);
 
 	/* Wilcoxon Signed Rank Distribution */
 
-double dsignrank(double, double, int);
-double psignrank(double, double, int, int);
-double qsignrank(double, double, int, int);
-double rsignrank(double);
+HD double dsignrank(double, double, int);
+HD double psignrank(double, double, int, int);
+HD double qsignrank(double, double, int, int);
+HD double rsignrank(double);
 
 	/* Gamma and Related Functions */
-double	gammafn(double);
-double	lgammafn(double);
-double	lgammafn_sign(double, int*);
-void    dpsifn(double, int, int, int, double*, int*, int*);
-double	psigamma(double, double);
-double	digamma(double);
-double	trigamma(double);
-double	tetragamma(double);
-double	pentagamma(double);
+HD double	gammafn(double);
+HD double	lgammafn(double);
+HD double	lgammafn_sign(double, int*);
+HD void    dpsifn(double, int, int, int, double*, int*, int*);
+HD double	psigamma(double, double);
+HD double	digamma(double);
+HD double	trigamma(double);
+HD double	tetragamma(double);
+HD double	pentagamma(double);
 
-double	beta(double, double);
-double	lbeta(double, double);
+HD double	beta(double, double);
+HD double	lbeta(double, double);
 
-double	choose(double, double);
-double	lchoose(double, double);
+HD double	choose(double, double);
+HD double	lchoose(double, double);
 
 	/* Bessel Functions */
 
-double	bessel_i(double, double, double);
-double	bessel_j(double, double);
-double	bessel_k(double, double, double);
-double	bessel_y(double, double);
-double	bessel_i_ex(double, double, double, double *);
-double	bessel_j_ex(double, double, double *);
-double	bessel_k_ex(double, double, double, double *);
-double	bessel_y_ex(double, double, double *);
+HD double	bessel_i(double, double, double);
+HD double	bessel_j(double, double);
+HD double	bessel_k(double, double, double);
+HD double	bessel_y(double, double);
+HD double	bessel_i_ex(double, double, double, double *);
+HD double	bessel_j_ex(double, double, double *);
+HD double	bessel_k_ex(double, double, double, double *);
+HD double	bessel_y_ex(double, double, double *);
 
 
 	/* General Support Functions */
 
 #ifndef HAVE_HYPOT
-double 	hypot(double, double);
+HD double 	hypot(double, double);
 #endif
-double 	pythag(double, double);
+HD double 	pythag(double, double);
 #ifndef HAVE_EXPM1
-double  expm1(double); /* = exp(x)-1 {care for small x} */
+HD double  expm1(double); /* = exp(x)-1 {care for small x} */
 #endif
 #ifndef HAVE_LOG1P
-double  log1p(double); /* = log(1+x) {care for small x} */
+HD double  log1p(double); /* = log(1+x) {care for small x} */
 #endif
-int	imax2(int, int);
-int	imin2(int, int);
-double	fmax2(double, double);
-double	fmin2(double, double);
-double	sign(double);
-double	fprec(double, double);
-double	fround(double, double);
-double	fsign(double, double);
-double	ftrunc(double);
+HD int	imax2(int, int);
+HD int	imin2(int, int);
+HD double	fmax2(double, double);
+HD double	fmin2(double, double);
+HD double	sign(double);
+HD double	fprec(double, double);
+HD double	fround(double, double);
+HD double	fsign(double, double);
+HD double	ftrunc(double);
 
-double  log1pmx(double); /* Accurate log(1+x) - x, {care for small x} */
-double  lgamma1p(double);/* accurate log(gamma(x+1)), small x (0 < x < 0.5) */
+HD double  log1pmx(double); /* Accurate log(1+x) - x, {care for small x} */
+HD double  lgamma1p(double);/* accurate log(gamma(x+1)), small x (0 < x < 0.5) */
 
 /* More accurate cos(pi*x), sin(pi*x), tan(pi*x)
 
@@ -629,9 +631,9 @@ double  lgamma1p(double);/* accurate log(gamma(x+1)), small x (0 < x < 0.5) */
    __STDC_IEC_60559_FUNCS__ (>= 201506L).
 */
 #if !(defined(__STDC_IEC_60559_FUNCS__) && __STDC_IEC_60559_FUNCS__ >= 201506L)
-double cospi(double);
-double sinpi(double);
-double tanpi(double);
+HD double cospi(double);
+HD double sinpi(double);
+HD double tanpi(double);
 #endif
 
 /* Compute the log of a sum or difference from logs of terms, i.e.,
@@ -641,8 +643,8 @@ double tanpi(double);
  *
  * without causing overflows or throwing away too much accuracy:
  */
-double  logspace_add(double logx, double logy);
-double  logspace_sub(double logx, double logy);
+HD double  logspace_add(double logx, double logy);
+HD double  logspace_sub(double logx, double logy);
 
 
 /* ----------------- Private part of the header file ------------------- */
@@ -661,14 +663,14 @@ double  logspace_sub(double logx, double logy);
 /* If isnan is a macro, as C99 specifies, the C++
    math header will undefine it. This happens on macOS */
 # ifdef __cplusplus
-  int R_isnancpp(double); /* in mlutils.c */
+HD   int R_isnancpp(double); /* in mlutils.c */
 #  define ISNAN(x)     R_isnancpp(x)
 # else
 #  define ISNAN(x)     (isnan(x)!=0)
 # endif
 
 # define R_FINITE(x)    R_finite(x)
-int R_finite(double);
+HD int R_finite(double);
 
 # ifdef _WIN32  /* not Win32 as no config information */
 #  ifdef RMATH_DLL
@@ -687,8 +689,8 @@ extern int N01_kind;
 
 #endif /* MATHLIB_STANDALONE */
 
-#ifdef  __cplusplus
-}
-#endif
+/* #ifdef  __cplusplus */
+/* } */
+/* #endif */
 
 #endif /* RMATH_H */
