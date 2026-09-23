@@ -122,5 +122,13 @@ int main()
   cudaFree(d_states);
   cudaFree(d_output);
 
+  // check host code
+  printf("Default constructor:\n");
+  st = rngstream::RngStream();
+  printf("%f\n", rngstream::U01(st));
+  printf("As per R's set.seed(12345):\n");
+  st = rngstream::RngStream(12345U);
+  printf("%f\n", rngstream::U01(st));
+  
   return 0;
 }

@@ -1,5 +1,6 @@
 *~
 test_RngStream
+test_cuRAND
 *.o
 a.out
 GPATH
