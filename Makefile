@@ -17,6 +17,9 @@ $(TARGET): src/test_qnorm.cu $(OBJ)
 test_RngStream: test_RngStream.cu
 	$(NVCC) $(NVFLAGS) $^ -o $@ $(LDLIBS)
 
+test_RngStream-2: test_RngStream-2.cu
+	$(NVCC) $(NVFLAGS) $^ -o $@ $(LDLIBS)
+
 test_cuRAND: test_cuRAND.cu
 	$(NVCC) $(NVFLAGS) $^ -o $@ $(LDLIBS)
 

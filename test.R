@@ -1,0 +1,38 @@
+
+dnorm(0)
+pnorm(1.96)
+qnorm(0.975)
+qgamma(0.1,1)
+qpois(0.975,10)
+
+RNGkind("Marsaglia-Multicarry") |> suppressWarnings()
+.Random.seed = c(10401L, 1234L, 5678L)
+runif(1)
+rnorm(1)
+rpois(1,17)
+
+library(parallel)
+unsigned = function (seed) 
+    ifelse(seed < 0, seed + 2^32, seed)
+RNGkind("L'Ecuyer-CMRG")
+.Random.seed = c(10407L, 12345L, 12345L, 12345L, 12345L, 12345L, 12345L)
+runif(1)
+unsigned(.Random.seed)
+set.seed(12345)
+runif(1)
+unsigned(.Random.seed)
+
+
+unsigned = function (seed) 
+    ifelse(seed < 0, seed + 2^32, seed)
+library(parallel)
+RNGkind("L'Ecuyer-CMRG")
+init = c(10407L, 12345L, 12345L, 12345L, 12345L, 12345L, 12345L)
+.Random.seed = init
+print(runif(1),digits=16)
+.Random.seed = nextRNGStream(init)
+runif(1)
+.Random.seed = nextRNGSubStream(init)
+runif(1)
+set.seed(12345)
+runif(1)

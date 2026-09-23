@@ -2,3 +2,6 @@
 test_RngStream
 *.o
 a.out
+GPATH
+GRTAGS
+GTAGS
