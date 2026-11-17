@@ -1,0 +1,92 @@
+name: GPU Simulator
+
+# Optional, non-required check. The hosted runners have no GPU, so this builds
+# and runs the CUDA RNG tests (test_RngStream, test_cuRAND) on a simulated
+# NVIDIA H100 (https://github.com/pantheongpu/pantheonsim). A simulator has no
+# timing model and cannot reproduce hardware-specific behavior, so it
+# complements real-GPU testing and does not replace it.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "*.cu"
+      - "*.cuh"
+      - "Makefile"
+      - "include/**"
+      - "src/**"
+      - ".github/workflows/gpu-sim.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: RNG tests (CUDA 13.0 and simulated H100)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up the simulated GPU and CUDA toolkit
+        uses: pantheongpu/setup-pantheonsim@a1b9d4237411f9b2b0e0bb895b4d83377f336a7b # v0.1.9
+        with:
+          gpu: nvidia/h100
+          cuda-toolkit: "13.0"
+
+      # The Makefile flags are overridden on the command line (the repo is not
+      # edited): compute_90 embeds PTX only, which the simulator runs, the
+      # simulator needs a shared CUDA runtime, sm_61 and g++-11 are not
+      # available, and test_cuRAND.cu needs <cstdint> pulled in.
+      - name: Build
+        run: |
+          FLAGS="-arch=compute_90 -cudart shared -include cstdint -DMATHLIB_STANDALONE=1 -Iinclude -Isrc"
+          vgpu run --preload make "NVFLAGS=$FLAGS" test_RngStream test_cuRAND
+
+      # Neither program checks its own result, so this step compares the
+      # printed numbers with a reference. The reference values and tolerances
+      # are this workflow's own, not upstream's: they are the outputs seen on
+      # the simulator (the first device value, 0.127011, is also what the
+      # host-side RngStream code prints for the default seed, and the final
+      # value is what the host code prints for set.seed(12345)). The tolerance is
+      # 1e-6 for the 6-digit prints and 1e-12 for the 17-digit prints.
+      - name: Test
+        shell: bash
+        run: |
+          set -o pipefail
+          vgpu run ./test_RngStream 2>&1 | tee rngstream.log
+          vgpu run ./test_cuRAND 2>&1 | tee curand.log
+          python3 - <<'PY'
+          import re, sys
+          def numbers(path):
+              txt = open(path).read()
+              bad = re.search(r"error|VirtualGPU|no device|skipped", txt, re.I)
+              if bad:
+                  sys.exit("%s: found '%s' in the output" % (path, bad.group(0)))
+              if "virtual GPU platform initialized" not in txt:
+                  sys.exit("%s: the virtual GPU was not initialised" % path)
+              return [float(x) for x in re.findall(r"^\s*(\d\.\d+)\s*$", txt, re.M)]
+          def check(path, expected, tol):
+              got = numbers(path)
+              if len(got) != len(expected):
+                  sys.exit("%s: expected %d numbers, got %d" % (path, len(expected), len(got)))
+              for i, (g, e) in enumerate(zip(got, expected)):
+                  if abs(g - e) > tol:
+                      sys.exit("%s: value %d is %.17g, expected %.17g (tolerance %g)" % (path, i, g, e, tol))
+              print("%s: %d values within %g" % (path, len(got), tol))
+          # 8 substreams x 2 draws on the device, then 2 host draws
+          check("rngstream.log",
+                [0.127011, 0.079399, 0.752176, 0.507095, 0.462953, 0.154438,
+                 0.935634, 0.720843, 0.421538, 0.121647, 0.692003, 0.171978,
+                 0.481120, 0.954334, 0.589107, 0.833604, 0.127011, 0.072441], 1e-6)
+          check("curand.log",
+                [0.12701112207614923, 0.07939898981582115,
+                 0.75958186242557346, 0.072440895051729653], 1e-12)
+          PY
